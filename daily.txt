@@ -1,0 +1,23 @@
+Today:
+
+I made cache!
+
+difficulty: My computer's about to die!!!!
+difficulty: I definitely misunderstood the goal of the project
+
+
+change the couting of hit and miss to a variable in Cache
+       in order to deal with read/write hitting stuph
+
+DEAL WITH ADDRESS VS INDEX (simple find/replace, but decide what to rename as)
+
+DIRTY BIT (DO NOT FORGET THIS)
+
+
+
+
+
+maybe start over???
+      now that I know that I'm supposed to just take the addresses and see the miss rate, instead of actually doing the whole memory thing
+
+
