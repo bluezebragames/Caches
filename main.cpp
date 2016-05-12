@@ -6,6 +6,14 @@ using namespace std;
 
 int main() {
 
+  int arr[16];
+  int* x = &arr[0];
+  int* y = &arr[15];
+  cout << y - x << endl;
+
+
+
+
   int numblocks, numsets;
 
   // take cache size
@@ -32,7 +40,7 @@ int main() {
   ch.indexes.resize(numindexes);
   while(true) {
     ch.print();
-    cout << "input 0 for read, 1 for write, -1 to quit\n";
+    cout << "input 0 for read, 1 for write, -1 for quit\n";
     cin >> rw;
     if(rw == 0) {
       cout << "input address\n";
@@ -54,34 +62,19 @@ int main() {
         if(tb == 0) {
           // writethrough
           // set cache index to value as well
-          ch.setAddressesk(address, index, value);
+          ch.indexes[index] = value;
         }
         else {
           // writeback
           // don't have to do anything else
         }
       }
-      ch.indexes[address] = value;
+      cout << address << " " << index << " " << value << endl;
+      ch.setAddressesk(address, index, value);
     }
     else {break;}
   }
 
-
-  // if pointers
-
-  // cout << "input addresses, -1 to quit\n";
-  // // long long address;
-  // int address;
-  // cin >> address;
-  // while(address != -1) {
-  //   cout << ch.FindA(&address) << endl;
-  //
-  //   // //cout << ch.FindDM((int *)address) << endl;
-  //   // cout << address << endl;
-  //   // cout << (int *) address << endl;
-  //   // cout << *(int *) address << endl;
-  //   cin >> address;
-  // }
 
   return 0;
 }

@@ -9,8 +9,6 @@ using namespace std;
 class Cache {
  public:
   Cache(int, int);
-  int FindDM(int*);
-  int FindA(int*);
   int FindDMk(int);
   int FindAk(int);
 
@@ -22,7 +20,6 @@ class Cache {
   bool hit;
  private:
   int numblocks, numsets, hits = 0, misses = 0;
-  vector<pair<int*, int> > addresses;
   vector<pair<int, int> > addressesk;
   vector<int> repls;
 };

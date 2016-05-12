@@ -1,7 +1,8 @@
 Today:
 
-I made cache!
+Summary: I made a demo cache program!  Unfortunately Mr. Hirano and I realized that my code is kinda terrible so I'm going to delete it and start again tomorrow, with the lessons of today in mind, and hopefully a better structure.  I'm going to keep some of my code, probably, because a lot of it is salvagable, but it definitely needs work or maybe just deletion entirely.
 
+largest lesson: I need to structure my programs before I start jumping in
 difficulty: My computer's about to die!!!!
 difficulty: I definitely misunderstood the goal of the project
 
