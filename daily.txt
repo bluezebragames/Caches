@@ -1,24 +1,25 @@
 Today:
 
-Summary: I made a demo cache program!  Unfortunately Mr. Hirano and I realized that my code is kinda terrible so I'm going to delete it and start again tomorrow, with the lessons of today in mind, and hopefully a better structure.  I'm going to keep some of my code, probably, because a lot of it is salvagable, but it definitely needs work or maybe just deletion entirely.
+I started and completed the set-associative part of the cache project, and am now able to both read from and write to memory.  I am staying in contact with Mr. Hirano as I continue to make progress on the project.
 
-largest lesson: I need to structure my programs before I start jumping in
-difficulty: My computer's about to die!!!!
-difficulty: I definitely misunderstood the goal of the project
+Surprise:  He wants me to be really certain about my code, which I wasn't expecting.  Well, I expected that he'd want to make sure the code works, but the extent of it was a pleasant surprise?  Something like that.
 
+Challenge: having to transition into the next portion of the project, which is very different from this one.  I'm glad that I get the weekend as a sort of switching time.
 
-change the couting of hit and miss to a variable in Cache
-       in order to deal with read/write hitting stuph
-
-DEAL WITH ADDRESS VS INDEX (simple find/replace, but decide what to rename as)
-
-DIRTY BIT (DO NOT FORGET THIS)
+deal with 2d array initialization between cache.h and cache.cpp
+instead of the current vector<> thing
 
 
+okay i do not use index at all
+also offset?  what about that thing?  is that set-associative?  do I need it?
 
 
+Day 1:
+6
 
-maybe start over???
-      now that I know that I'm supposed to just take the addresses and see the miss rate, instead of actually doing the whole memory thing
+Day 2:
+4
 
+Day 3:
+7 1/4
 

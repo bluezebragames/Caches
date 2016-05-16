@@ -6,22 +6,28 @@
 
 using namespace std;
 
+struct entry {
+  int tag;
+  int index;
+  bool valid;
+};
+
 class Cache {
  public:
   Cache(int, int);
-  int FindDMk(int);
-  int FindAk(int);
-
-  void setAddressesk(int, int, int);
+  int FindDM(int);
+  int FindA(int);
+  void WriteDM(int, int);
+  void WriteA(int, int);
 
   void print();
+  static const int MEMSIZE = 150;
 
-  vector<int> indexes;
-  bool hit;
  private:
-  int numblocks, numsets, hits = 0, misses = 0;
-  vector<pair<int, int> > addressesk;
-  vector<int> repls;
+  int MOD, numblocks, numsets, hits = 0, misses = 0;
+  vector<entry> cache;
+  vector<int> data;
+  int memory[MEMSIZE];
 };
 
 #endif

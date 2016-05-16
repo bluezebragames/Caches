@@ -1,27 +1,20 @@
 #include <iostream>
+#include <fstream>
 
 #include "cache.h"
 
 using namespace std;
 
 int main() {
+  ifstream fin("out.txt");
 
-  int arr[16];
-  int* x = &arr[0];
-  int* y = &arr[15];
-  cout << y - x << endl;
-
-
-
-
+  // MEMORY SIZE IS FIXED AT 150
   int numblocks, numsets;
-
-  // take cache size
   cout << "number of blocks?\n";
-  cin >> numblocks;
+  fin >> numblocks;
 
   cout << "number of sets?\n";
-  cin >> numsets;
+  fin >> numsets;
 
   if(numblocks % numsets != 0) {
     cout << "that number of sets in those blocks isn't going to work, you know\nyour blocks should be divisible by your sets\n";
@@ -29,52 +22,36 @@ int main() {
   }
 
   Cache ch = Cache(numblocks, numsets);
+  ch.print();
 
-  // take addresses
-
-  // if key-value pairs
-
-  int address = 0, rw, value, numindexes, index;
-  cout << "number of indexes?\n";
-  cin >> numindexes;
-  ch.indexes.resize(numindexes);
-  while(true) {
-    ch.print();
-    cout << "input 0 for read, 1 for write, -1 for quit\n";
-    cin >> rw;
-    if(rw == 0) {
-      cout << "input address\n";
-      cin >> address;
-      cout << ch.FindDMk(address) << endl;
-      // cout << ch.FindAk(address) << endl;
+  long long address;
+  int rw = 0;
+  while(rw != -1) {
+    // cout << "input 0 for read, 1 for write, -1 to quit\n";
+    fin >> rw;
+    // cout << "input some addresses\n";
+    fin >> address;
+    while(address >= ch.MEMSIZE)
+      {cout << "try again\n"; fin >> address;}
+    switch (rw) {
+    case 0:
+      cout << ch.FindA(address) << " ";
+      break;
+    case 1:
+      cout << "what do you want to write?";
+      int toWrite; fin >> toWrite;
+      ch.WriteA(address, toWrite);
+      break;
+    case 2:
+      cout << endl;
+      ch.print();
+      ch = Cache(numblocks, numsets);
+      break;
+    default:
+      break;
     }
-    else if(rw == 1) {
-      cout << "input address\n";
-      cin >> address;
-      cout << "input value\n";
-      cin >> value;
-      // writethrough or writeback?
-      index = ch.FindDMk(address);
-      if(ch.hit) {
-        cout << "writethrough (0) or writeback (1)?\n";
-        bool tb;
-        cin >> tb;
-        if(tb == 0) {
-          // writethrough
-          // set cache index to value as well
-          ch.indexes[index] = value;
-        }
-        else {
-          // writeback
-          // don't have to do anything else
-        }
-      }
-      cout << address << " " << index << " " << value << endl;
-      ch.setAddressesk(address, index, value);
-    }
-    else {break;}
+    // ch.print();
   }
-
 
   return 0;
 }
