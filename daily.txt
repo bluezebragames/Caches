@@ -1,10 +1,10 @@
 Today:
 
-I started and completed the set-associative part of the cache project, and am now able to both read from and write to memory.  I am staying in contact with Mr. Hirano as I continue to make progress on the project.
+Today I implemented not-most recently used as a replacement policy in the cache, as well as researching and implementing high-resolution timing.
 
-Surprise:  He wants me to be really certain about my code, which I wasn't expecting.  Well, I expected that he'd want to make sure the code works, but the extent of it was a pleasant surprise?  Something like that.
+Hardest challenge: Understanding the extremely complicated tutorial put out by Apple on how to understand one function, where to call it, and why.
 
-Challenge: having to transition into the next portion of the project, which is very different from this one.  I'm glad that I get the weekend as a sort of switching time.
+Largest lesson: I've picked up a lot of random tidbits throughout my life that're going to help me when I'm a professional programmer!
 
 deal with 2d array initialization between cache.h and cache.cpp
 instead of the current vector<> thing
@@ -23,3 +23,7 @@ Day 2:
 Day 3:
 7 1/4
 
+Day 4:
+7.5
+
+nmru, lru?, test random array addresses, timing

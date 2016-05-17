@@ -3,17 +3,39 @@
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
-
 // initialize the cache, set up the vectors for addresses and repls
 Cache::Cache(int nb, int ns) {
   srand(time(0));
   numblocks = nb;
   numsets = ns;
+  hits = 0;
+  misses = 0;
   entry temp;
   temp.tag = -1;
   temp.index = -1;
   temp.valid = false;
   cache.resize(numblocks, temp);
+  mru.resize(numsets, -1);
+  data.resize(numblocks, -1);
+  memset(memory, -1, MEMSIZE * sizeof(int));
+}
+
+Cache::~Cache() {
+}
+
+
+void Cache::clear() {
+  hits = 0;
+  misses = 0;
+  cache.clear();
+  mru.clear();
+  data.clear();
+  entry temp;
+  temp.tag = -1;
+  temp.index = -1;
+  temp.valid = false;
+  cache.resize(numblocks, temp);
+  mru.resize(numsets, -1);
   data.resize(numblocks, -1);
   memset(memory, -1, MEMSIZE * sizeof(int));
 }
@@ -52,6 +74,8 @@ int Cache::FindA(int address) {
       // HIT!
       // cout << "Hit!\n";
       hits++;
+      // update mru with this new block
+      mru[i] = i * numblocks / numsets + address%MOD;
       return i * numblocks / numsets + address%MOD;
     }
     // if we haven't found an invalid block and this one is invalid, then this is the invalid one that we've now found
@@ -72,12 +96,34 @@ int Cache::FindA(int address) {
     // we found an invalid entry
     cache[invalid] = temp;
     data[invalid] = memory[address];
+    mru[invalid / MOD] = invalid;
     return invalid;
   }
 
   // TODO: MOVE TO FUNC TO ENABLE EASY SWITCHING
-  // else, replace a random
-  // cout << "random time!\n";
+  return NMRU(address, temp);
+}
+
+int Cache::NMRU(int address, entry temp) {
+  double i;
+  int counter = 0;
+  do {
+    i = rand();
+    i /= (long long)RAND_MAX+1;
+    i *= numsets;
+    i = (int)i;
+    counter++;
+  } while (i*numblocks/numsets+address%MOD == mru[address%MOD] &&
+           numsets != 1);
+  // the only problem is that I have no clue if this works
+  cache[i * numblocks / numsets + address%MOD] = temp;
+  data[i * numblocks / numsets + address%MOD] = memory[address];
+  mru[i] = i * numblocks / numsets + address%MOD;
+  return i * numblocks / numsets + address%MOD;
+}
+
+// replace a random
+int Cache::RAND(int address, entry temp) {
   double i = rand();
   i /= (long long)RAND_MAX+1;
   i *= numsets;
@@ -107,7 +153,6 @@ void Cache::WriteA (int address, int toWrite) {
 
 
 // DEBUG
-// TODO: Print cache utilization
 void Cache::print() {
   // prints the contents of the cache: tag, index, data
   int used = 0;
@@ -115,11 +160,15 @@ void Cache::print() {
     cout << cache[i].tag << "\t" << cache[i].index << "\t" << data[i] << "\n";
     if(cache[i].tag == -1){used++;}
   }
+  // outputs mrus
+  for(int i = 0; i<(int)mru.size(); ++i) {
+    cout << "MRU " << i << ": " << mru[i] << endl;
+  }
   // prints general information about the cache
   cout << "This cache is " << (numsets == 1 ? ("direct-mapped ") : (numsets == numblocks ? ("fully associative ") : (to_string(numsets) + "-way associative "))) << "with " << numsets << " sets and " << numblocks << " blocks." << endl;
   // prints hit rate
   cout << "Current hit rate is: " << (100.0 * hits / (hits + misses)) << "%\n";
   cout << hits << " hits, " << misses << " misses, for a total of " << hits+misses << " queries\n";
   // prints cache utilization
-  // cout << "Cache utilization: " << used << " cache lines were used, out of " << cache.size() << endl;
+  cout << "Cache utilization: " << cache.size() - used << " cache lines were used, out of " << cache.size() << endl;
 }
