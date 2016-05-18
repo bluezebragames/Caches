@@ -63,12 +63,10 @@ int main() {
       ch.print();
       ch.clear();
       now = mach_absolute_time();
-      cout << "we're back!" << endl;
       break;
     default:
       break;
     }
-    cout << "we're back!" << endl;
     // ch.print();
   }
 

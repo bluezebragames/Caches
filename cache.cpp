@@ -115,7 +115,7 @@ int Cache::FindA(int address) {
     return invalid;
   }
 
-  // TODO: IMPLEMENT LRU
+  // TODO: CORRECTLY IMPLEMENT LRU
   return LRU(address, temp);
 }
 
@@ -131,11 +131,11 @@ void Cache::touchLRU(int i, int j) {
 int Cache::LRU(int address, entry temp) {
   int i;
   for(i = 0; i<numblocks / numsets; ++i) {
-    if(lru[address / MOD][i] == 0) break;
+    if(lru[address%MOD][i] == 0) break;
   }
   cache[i*numblocks/numsets+address%MOD] = temp;
   data[i*numblocks/numsets+address%MOD] = memory[address];
-  touchLRU(address / MOD, i);
+  touchLRU(address%MOD, i);
   return i*numblocks/numsets+address%MOD;
 }
 
