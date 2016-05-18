@@ -20,6 +20,7 @@ int main() {
   // // is ~75%
   // // 16/20 = .75, which is good
   // fout << 2 << " " << 2 << endl;
+  fout << "0 1 0 2 0 3 0 4 2 2 " << endl;
 
   // for(int i = 0; i<50; ++i) {
   //   fout << 0 << " " << i << " ";

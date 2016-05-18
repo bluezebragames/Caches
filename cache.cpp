@@ -16,6 +16,9 @@ Cache::Cache(int nb, int ns) {
   temp.valid = false;
   cache.resize(numblocks, temp);
   mru.resize(numsets, -1);
+  vector<int> tempv;
+  tempv.resize(numblocks/numsets, 0);
+  lru.resize(numsets, tempv);
   data.resize(numblocks, -1);
   memset(memory, -1, MEMSIZE * sizeof(int));
 }
@@ -25,10 +28,15 @@ Cache::~Cache() {
 
 
 void Cache::clear() {
+  cout << "Starting clear\n";
   hits = 0;
   misses = 0;
   cache.clear();
   mru.clear();
+  for(int i = 0; i<(int)lru.size(); ++i) {
+    lru[i].clear();
+  }
+  lru.clear();
   data.clear();
   entry temp;
   temp.tag = -1;
@@ -36,8 +44,13 @@ void Cache::clear() {
   temp.valid = false;
   cache.resize(numblocks, temp);
   mru.resize(numsets, -1);
+  vector<int> tempv;
+  tempv.resize(numblocks/numsets, 0);
+  lru.resize(numsets, tempv);
   data.resize(numblocks, -1);
   memset(memory, -1, MEMSIZE * sizeof(int));
+  cout << "Ending clear\n";
+  print();
 }
 
 
@@ -76,6 +89,7 @@ int Cache::FindA(int address) {
       hits++;
       // update mru with this new block
       mru[i] = i * numblocks / numsets + address%MOD;
+      touchLRU(i, address%MOD);
       return i * numblocks / numsets + address%MOD;
     }
     // if we haven't found an invalid block and this one is invalid, then this is the invalid one that we've now found
@@ -97,11 +111,32 @@ int Cache::FindA(int address) {
     cache[invalid] = temp;
     data[invalid] = memory[address];
     mru[invalid / MOD] = invalid;
+    touchLRU(invalid / MOD, invalid%MOD);
     return invalid;
   }
 
-  // TODO: MOVE TO FUNC TO ENABLE EASY SWITCHING
-  return NMRU(address, temp);
+  // TODO: IMPLEMENT LRU
+  return LRU(address, temp);
+}
+
+void Cache::touchLRU(int i, int j) {
+  int curr = lru[i][j];
+  for(int k = 0; k<(int)lru[i].size(); ++k) {
+    if(lru[i][k] > curr)
+      lru[i][k]--;
+  }
+  lru[i][j] = numblocks / numsets - 1;
+}
+
+int Cache::LRU(int address, entry temp) {
+  int i;
+  for(i = 0; i<numblocks / numsets; ++i) {
+    if(lru[address / MOD][i] == 0) break;
+  }
+  cache[i*numblocks/numsets+address%MOD] = temp;
+  data[i*numblocks/numsets+address%MOD] = memory[address];
+  touchLRU(address / MOD, i);
+  return i*numblocks/numsets+address%MOD;
 }
 
 int Cache::NMRU(int address, entry temp) {
@@ -163,6 +198,14 @@ void Cache::print() {
   // outputs mrus
   for(int i = 0; i<(int)mru.size(); ++i) {
     cout << "MRU " << i << ": " << mru[i] << endl;
+  }
+  // outputs lrus
+  for(int i = 0; i<(int)lru.size(); ++i) {
+    cout << "LRU " << i << ": ";
+    for(int j = 0; j<(int)lru[i].size(); ++j) {
+      cout << lru[i][j] << " ";
+    }
+    cout << endl;
   }
   // prints general information about the cache
   cout << "This cache is " << (numsets == 1 ? ("direct-mapped ") : (numsets == numblocks ? ("fully associative ") : (to_string(numsets) + "-way associative "))) << "with " << numsets << " sets and " << numblocks << " blocks." << endl;

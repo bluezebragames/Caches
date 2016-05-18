@@ -37,6 +37,7 @@ int main() {
   uint64_t fini;
   int counter = 0;
   while(rw != -1) {
+    cout << rw << " ";
     // cout << "input 0 for read, 1 for write, -1 to quit\n";
     fin >> rw;
     // cout << "input some addresses\n";
@@ -62,10 +63,12 @@ int main() {
       ch.print();
       ch.clear();
       now = mach_absolute_time();
+      cout << "we're back!" << endl;
       break;
     default:
       break;
     }
+    cout << "we're back!" << endl;
     // ch.print();
   }
 

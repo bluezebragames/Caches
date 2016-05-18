@@ -27,7 +27,9 @@ class Cache {
 
   // REPLACEMENT
   int RAND(int, entry);
-  int NMRU (int, entry);
+  int NMRU(int, entry);
+  int LRU(int, entry);
+  void touchLRU(int, int);
 
   void print();
   static const int MEMSIZE = 150;
@@ -37,6 +39,7 @@ class Cache {
   vector<entry> cache;
   vector<int> data;
   vector<int> mru;
+  vector<vector<int> > lru;
   int memory[MEMSIZE];
 };
 
