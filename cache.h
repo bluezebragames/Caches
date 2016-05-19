@@ -41,6 +41,10 @@ class Cache {
   vector<int> mru;
   vector<vector<int> > lru;
   int memory[MEMSIZE];
+
+  inline int convAddress(int address, int i) {
+    return address%MOD*numblocks/numsets + i;
+  }
 };
 
 #endif

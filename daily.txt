@@ -1,17 +1,11 @@
 Today:
 
-Today I took a trip to Oracle, explored their data centers, and got halfway through implementing lru as a replacement policy.  I also worked out bugs with not-mru.
-
-Greatest lesson: there's some great pho out by Oracle.
-
-Biggest challenge: absorbing the sheer amount of information I got on the tour, or maybe dealing with the constant segmentation faults I keep getting, for whatever reason.
-
-deal with 2d array initialization between cache.h and cache.cpp
-instead of the current vector<> thing
+Today I realized I really messed up 
 
 
-okay i do not use index at all
-also offset?  what about that thing?  is that set-associative?  do I need it?
+
+characterize program, analyze
+there is great practical usage for this area
 
 
 Day 1:

@@ -28,7 +28,6 @@ Cache::~Cache() {
 
 
 void Cache::clear() {
-  cout << "Starting clear\n";
   hits = 0;
   misses = 0;
   cache.clear();
@@ -49,8 +48,6 @@ void Cache::clear() {
   lru.resize(numsets, tempv);
   data.resize(numblocks, -1);
   memset(memory, -1, MEMSIZE * sizeof(int));
-  cout << "Ending clear\n";
-  print();
 }
 
 
@@ -81,20 +78,20 @@ int Cache::FindA(int address) {
   MOD = numblocks / numsets;  // it's different for DM and A
   int invalid = -1; // if there is an invalid block in the cache and we miss, we can replace the invalid with the new block
   // check all of the possible places it could be
-  for(int i = 0; i<numsets; ++i) {
-    // blocks are separated by a distance of (numblocks / numsets) and are at an 'offset' of address%MOD
-    if(cache[i * numblocks / numsets + address%MOD].tag == address/MOD && cache[i * numblocks / numsets + address%MOD].valid == true) {
+  for(int i = 0; i<numblocks/numsets; ++i) {
+    // blocks are separated by a distance of 1 and are at an 'offset' of address%MOD * numblocks/numsets
+    if(cache[convAddress(address,i)].tag == address/MOD && cache[convAddress(address,i)].valid == true) {
       // HIT!
       // cout << "Hit!\n";
       hits++;
       // update mru with this new block
-      mru[i] = i * numblocks / numsets + address%MOD;
-      touchLRU(i, address%MOD);
-      return i * numblocks / numsets + address%MOD;
+      mru[address%MOD] = convAddress(address, i);
+      touchLRU(address%MOD, i);
+      return convAddress(address, i);
     }
     // if we haven't found an invalid block and this one is invalid, then this is the invalid one that we've now found
-    if(invalid == -1 && cache[i * numblocks / numsets + address%MOD].valid == false) {
-      invalid = i * numblocks / numsets + address%MOD;
+    if(invalid == -1 && cache[convAddress(address, i)].valid == false) {
+      invalid = convAddress(address, i);
     }
   }
   // Nope, it wasn't there, we'd better add it
@@ -110,8 +107,8 @@ int Cache::FindA(int address) {
     // we found an invalid entry
     cache[invalid] = temp;
     data[invalid] = memory[address];
-    mru[invalid / MOD] = invalid;
-    touchLRU(invalid / MOD, invalid%MOD);
+    mru[address%MOD] = invalid;
+    touchLRU(address%MOD, invalid%MOD);
     return invalid;
   }
 
@@ -133,10 +130,10 @@ int Cache::LRU(int address, entry temp) {
   for(i = 0; i<numblocks / numsets; ++i) {
     if(lru[address%MOD][i] == 0) break;
   }
-  cache[i*numblocks/numsets+address%MOD] = temp;
-  data[i*numblocks/numsets+address%MOD] = memory[address];
+  cache[convAddress(address, i)] = temp;
+  data[convAddress(address, i)] = memory[address];
   touchLRU(address%MOD, i);
-  return i*numblocks/numsets+address%MOD;
+  return convAddress(address, i);
 }
 
 int Cache::NMRU(int address, entry temp) {
@@ -145,16 +142,16 @@ int Cache::NMRU(int address, entry temp) {
   do {
     i = rand();
     i /= (long long)RAND_MAX+1;
-    i *= numsets;
+    i *= numblocks/numsets;
     i = (int)i;
     counter++;
-  } while (i*numblocks/numsets+address%MOD == mru[address%MOD] &&
+  } while (convAddress(address, i) == mru[address%MOD] &&
            numsets != 1);
   // the only problem is that I have no clue if this works
-  cache[i * numblocks / numsets + address%MOD] = temp;
-  data[i * numblocks / numsets + address%MOD] = memory[address];
-  mru[i] = i * numblocks / numsets + address%MOD;
-  return i * numblocks / numsets + address%MOD;
+  cache[convAddress(address, i)] = temp;
+  data[convAddress(address, i)] = memory[address];
+  mru[address%MOD] = convAddress(address, i);
+  return convAddress(address, i);
 }
 
 // replace a random
