@@ -1,4 +1,4 @@
-#include "cache.h"
+#include "cache.hpp"
 
 #include <cmath>
 #include <cstdlib>
@@ -20,10 +20,7 @@ Cache::Cache(int nb, int ns) {
   tempv.resize(numblocks/numsets, 0);
   lru.resize(numsets, tempv);
   data.resize(numblocks, -1);
-  memset(memory, -1, MEMSIZE * sizeof(int));
-}
-
-Cache::~Cache() {
+  memset(memory, 0, MEMSIZE * sizeof(int));
 }
 
 
@@ -50,6 +47,11 @@ void Cache::clear() {
   memset(memory, -1, MEMSIZE * sizeof(int));
 }
 
+void Cache::hmzero() {
+  hits = 0;
+  misses = 0;
+}
+
 
 // find an element in the cache, assuming that the cache is direct-mapped
 int Cache::FindDM(int address) {
@@ -63,19 +65,20 @@ int Cache::FindDM(int address) {
   }
   // cout << "Miss\n";
   misses++;
-  // create a new entry with the address info (and fake data)
+  // create a new entry with the address info, and put it in the cache
   entry temp;
   temp.tag = address/MOD;
   temp.index = address%MOD;
   temp.valid = true;
   cache[address%MOD] = temp;
-  data[address%MOD] = memory[address];
+  // data[address%MOD] = memory[address];
+  data[address%MOD] = 0;
   return address%MOD;
 }
 
-// find an element in the cache, assuming it's set-associative
+// find an element in the cache, assuming the cache is set-associative
 int Cache::FindA(int address) {
-  MOD = numblocks / numsets;  // it's different for DM and A
+  MOD = numsets;  // it's different for DM and A
   int invalid = -1; // if there is an invalid block in the cache and we miss, we can replace the invalid with the new block
   // check all of the possible places it could be
   for(int i = 0; i<numblocks/numsets; ++i) {
@@ -85,7 +88,7 @@ int Cache::FindA(int address) {
       // cout << "Hit!\n";
       hits++;
       // update mru with this new block
-      mru[address%MOD] = convAddress(address, i);
+      mru[address%MOD] = i;
       touchLRU(address%MOD, i);
       return convAddress(address, i);
     }
@@ -106,13 +109,13 @@ int Cache::FindA(int address) {
   if(invalid != -1) {
     // we found an invalid entry
     cache[invalid] = temp;
-    data[invalid] = memory[address];
-    mru[address%MOD] = invalid;
+    // data[invalid] = memory[address];
+    data[invalid] = 0;
+    mru[address%MOD] = invalid%MOD;
     touchLRU(address%MOD, invalid%MOD);
     return invalid;
   }
 
-  // TODO: CORRECTLY IMPLEMENT LRU
   return LRU(address, temp);
 }
 
@@ -131,7 +134,8 @@ int Cache::LRU(int address, entry temp) {
     if(lru[address%MOD][i] == 0) break;
   }
   cache[convAddress(address, i)] = temp;
-  data[convAddress(address, i)] = memory[address];
+  // data[convAddress(address, i)] = memory[address];
+  data[convAddress(address, i)] = 0;
   touchLRU(address%MOD, i);
   return convAddress(address, i);
 }
@@ -145,12 +149,12 @@ int Cache::NMRU(int address, entry temp) {
     i *= numblocks/numsets;
     i = (int)i;
     counter++;
-  } while (convAddress(address, i) == mru[address%MOD] &&
-           numsets != 1);
+  } while (i == mru[address%MOD] && numsets != 1);
   // the only problem is that I have no clue if this works
   cache[convAddress(address, i)] = temp;
-  data[convAddress(address, i)] = memory[address];
-  mru[address%MOD] = convAddress(address, i);
+  // data[convAddress(address, i)] = memory[address];
+  data[convAddress(address, i)];
+  mru[address%MOD] = i;
   return convAddress(address, i);
 }
 
@@ -161,9 +165,10 @@ int Cache::RAND(int address, entry temp) {
   i *= numsets;
   i = (int)i;
 
-  cache[i * numblocks / numsets + address%MOD] = temp;
-  data[i * numblocks / numsets + address%MOD] = memory[address];
-  return i * numblocks / numsets + address%MOD;
+  cache[convAddress(address, i)] = temp;
+  // data[convAddress(address, i)] = memory[address];
+  data[convAddress(address, i)] = 0;
+  return convAddress(address, i);
 }
 
 
@@ -182,28 +187,26 @@ void Cache::WriteA (int address, int toWrite) {
 
 
 
-
-
 // DEBUG
 void Cache::print() {
   // prints the contents of the cache: tag, index, data
   int used = 0;
-  for(int i = 0; i<(int)cache.size(); ++i) {
-    cout << cache[i].tag << "\t" << cache[i].index << "\t" << data[i] << "\n";
-    if(cache[i].tag == -1){used++;}
-  }
-  // outputs mrus
-  for(int i = 0; i<(int)mru.size(); ++i) {
-    cout << "MRU " << i << ": " << mru[i] << endl;
-  }
-  // outputs lrus
-  for(int i = 0; i<(int)lru.size(); ++i) {
-    cout << "LRU " << i << ": ";
-    for(int j = 0; j<(int)lru[i].size(); ++j) {
-      cout << lru[i][j] << " ";
-    }
-    cout << endl;
-  }
+  // for(int i = 0; i<(int)cache.size(); ++i) {
+  //   cout << cache[i].tag << "\t" << cache[i].index << "\t" << data[i] << "\n";
+  //   if(cache[i].tag == -1){used++;}
+  // }
+  // // outputs mrus
+  // for(int i = 0; i<(int)mru.size(); ++i) {
+  //   cout << "MRU " << i << ": " << mru[i] << endl;
+  // }
+  // // outputs lrus
+  // for(int i = 0; i<(int)lru.size(); ++i) {
+  //   cout << "LRU " << i << ": ";
+  //   for(int j = 0; j<(int)lru[i].size(); ++j) {
+  //     cout << lru[i][j] << " ";
+  //   }
+  //   cout << endl;
+  // }
   // prints general information about the cache
   cout << "This cache is " << (numsets == 1 ? ("direct-mapped ") : (numsets == numblocks ? ("fully associative ") : (to_string(numsets) + "-way associative "))) << "with " << numsets << " sets and " << numblocks << " blocks." << endl;
   // prints hit rate

@@ -1,11 +1,48 @@
 Today:
 
-Today I realized I really messed up 
+Dear Mr. Hannen,
+
+Here is my log from today.
 
 
+Today I worked on finding the accurate timings for the length of a cache miss, as well as calculating the hit rates of various different access patterns and comparing the speed of the L1 cache to the last-level one.
+
+Unexpected experience: When I actually got the cache miss timing, and it corresponded with the expected one!  After the difficulties with time-measuring the past few days, it was great to finally see it work.
+
+Greatest challenge: I'm torn between the continued constant segfaults and the difficulty of coming up with an appropriate method to find the cache miss rate.  Neither are fun.
+
+
+How does Wednesday at 11:30 sound?
+
+Thanks,
+T.J.
 
 characterize program, analyze
 there is great practical usage for this area
+
+// all miss experiment
+// cache model -- hits * hit + miss * miss penalty
+//       2 levels of cache???
+// AND SEND IT
+
+
+Part I Reflections on the original proposal
+a. project is described and clearly tied to community service or career opportunities
+b. project goals: what they were, how they were / were not met
+
+Part II Overarching lessons
+a. largest lesson learned
+b. personal strength and challenge identified during this project
+c. how the opportunity affects vision of students’ future
+d. does / does not recommend this site for future seniors.
+
+Part III Mechanics of the presentation
+a. required presentation materials used are organized, correct, and used effectively
+b. delivery was polished, within the 10 -15 minute time limit; presenter is poised and at ease in front of the audience
+c. presentation is well organized
+d. introduction and conclusion are powerful and effective
+e. presenter answers questions well
+f. presenter dressed appropriately
 
 
 Day 1:
@@ -22,8 +59,14 @@ Day 4:
 
 Day 5:
 6.5
-(3.25 + 2:15 -> 5:30)
 
 Day 6:
+7.5
+
+Day 7:
+7.75
+
+Day 8:
+7.5
 
 nmru, lru?, test random array addresses, timing

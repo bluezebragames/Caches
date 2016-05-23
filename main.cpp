@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "cache.h"
+#include "cache.hpp"
 
 using namespace std;
 
@@ -21,20 +21,15 @@ int main() {
     return 0;
   }
 
+  // create the cache model
   Cache ch = Cache(numblocks, numsets);
-  ch.print();
 
   long long address;
   int rw = 0;
   int counter = 0;
   while(rw != -1) {
-    // cout << "input 0 for read, 1 for write, -1 to quit\n";
-    fin >> rw;
-    // cout << "input some addresses\n";
-    fin >> address;
+    fin >> rw >> address;
     counter++;
-    while(address >= ch.MEMSIZE)
-      {cout << "try again\n"; fin >> address;}
     switch (rw) {
     case 0:
       // cout << ch.FindA(address) << " ";
@@ -49,6 +44,8 @@ int main() {
       ch.print();
       ch.clear();
       break;
+    case 3:
+      ch.hmzero();
     default:
       break;
     }
