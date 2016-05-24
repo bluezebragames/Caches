@@ -30,6 +30,7 @@ int main() {
   while(rw != -1) {
     fin >> rw >> address;
     counter++;
+    // if(counter % 4000 == 0) {cout << counter << "!\n";}
     switch (rw) {
     case 0:
       // cout << ch.FindA(address) << " ";
@@ -45,6 +46,7 @@ int main() {
       ch.clear();
       break;
     case 3:
+      // ch.print();
       ch.hmzero();
     default:
       break;

@@ -15,6 +15,7 @@ struct entry {
 class Cache {
 public:
   Cache(int, int);
+  ~Cache();
   // RESTART
   void clear();
   void hmzero();
@@ -44,7 +45,7 @@ private:
   int memory[MEMSIZE];
 
   inline int convAddress(int address, int i) {
-    return address%MOD*numblocks/numsets + i;
+    return address%MOD*(numblocks/numsets) + i;
   }
 };
 

@@ -333,7 +333,7 @@ HISTOGRAM
 
 
 hit rate: 0% (cache simulator)
-t = newarray[64*(k + i*ACCESSESPERTEST + j*size*ACCESSESPERTEST)];
+t = newarray[64*(k + i*ACCESSESPERTEST + j*SIZE*ACCESSESPERTEST)];
 ===================================================================
 
 

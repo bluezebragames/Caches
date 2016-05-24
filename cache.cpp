@@ -23,6 +23,9 @@ Cache::Cache(int nb, int ns) {
   memset(memory, 0, MEMSIZE * sizeof(int));
 }
 
+Cache::~Cache() {
+}
+
 
 void Cache::clear() {
   hits = 0;
@@ -111,8 +114,8 @@ int Cache::FindA(int address) {
     cache[invalid] = temp;
     // data[invalid] = memory[address];
     data[invalid] = 0;
-    mru[address%MOD] = invalid%MOD;
-    touchLRU(address%MOD, invalid%MOD);
+    mru[address%MOD] = invalid/MOD;
+    touchLRU(address%MOD, invalid/MOD);
     return invalid;
   }
 
@@ -190,10 +193,8 @@ void Cache::WriteA (int address, int toWrite) {
 // DEBUG
 void Cache::print() {
   // prints the contents of the cache: tag, index, data
-  int used = 0;
   // for(int i = 0; i<(int)cache.size(); ++i) {
   //   cout << cache[i].tag << "\t" << cache[i].index << "\t" << data[i] << "\n";
-  //   if(cache[i].tag == -1){used++;}
   // }
   // // outputs mrus
   // for(int i = 0; i<(int)mru.size(); ++i) {
@@ -208,10 +209,14 @@ void Cache::print() {
   //   cout << endl;
   // }
   // prints general information about the cache
-  cout << "This cache is " << (numsets == 1 ? ("direct-mapped ") : (numsets == numblocks ? ("fully associative ") : (to_string(numsets) + "-way associative "))) << "with " << numsets << " sets and " << numblocks << " blocks." << endl;
+  cout << "This cache is " << (numsets == numblocks ? ("direct-mapped ") : (numsets == 1 ? ("fully associative ") : (to_string(numblocks/numsets) + "-way associative "))) << "with " << numsets << " sets and " << numblocks << " blocks." << endl;
   // prints hit rate
   cout << "Current hit rate is: " << (100.0 * hits / (hits + misses)) << "%\n";
   cout << hits << " hits, " << misses << " misses, for a total of " << hits+misses << " queries\n";
   // prints cache utilization
+  int used = 0;
+  for(int i = 0; i<(int)cache.size(); ++i) {
+    if(cache[i].tag == -1){used++;}
+  }
   cout << "Cache utilization: " << cache.size() - used << " cache lines were used, out of " << cache.size() << endl;
 }

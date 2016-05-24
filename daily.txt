@@ -1,21 +1,50 @@
 Today:
 
+
+TODO: go back to the proposal
+TODO: overarching lessons
+TODO: improve pun
+TODO: make the histogram from the data (googer?)
+The cache class is the thing that models the cache, so it makes sense that it would be the longest file out of all of them.  And it is, but only by literally 10 lines of code
+
+The test program is a program written to time things and to interface with the program that interfaces with the cache program.  Complicated, right?  It writes random lines of numbers to a file, whereupon another program reads those numbers and tells the model cache what to do with them.
+
+*get image of output file, or if I really need to fill time, pull it up*
+*random or sequential???*
+
+But why am I timing and modeling in the first place?
+
+It's annoying to do something and have it take forever, for not much reward :(
+
+
+
+
+
+
+
 Dear Mr. Hannen,
 
-Here is my log from today.
+Here's today's log.
 
 
-Today I worked on finding the accurate timings for the length of a cache miss, as well as calculating the hit rates of various different access patterns and comparing the speed of the L1 cache to the last-level one.
+Today I finished fixing the bugs that have plagued me from the beginning.  After learning how to correctly use gdb, the cool debugger thing that I downloaded a few days ago, I found the segfaults and corrected them (one was caused by an integer overflow, and the other one was something about the difference between % and /).
 
-Unexpected experience: When I actually got the cache miss timing, and it corresponded with the expected one!  After the difficulties with time-measuring the past few days, it was great to finally see it work.
+Biggest challenge: Incorrectly assuming that the segfaults were caused upon termination of the program, when in reality they were caused much earlier -- also, figuring out how to use gdb
 
-Greatest challenge: I'm torn between the continued constant segfaults and the difficulty of coming up with an appropriate method to find the cache miss rate.  Neither are fun.
+Largest lesson: Never assume that what you already have written is right, because there's a pretty good chance it actually isn't.
 
+I'll see you at 11:30 on Wednesday in your room, then.
 
-How does Wednesday at 11:30 sound?
 
 Thanks,
 T.J.
+
+Largest lesson learned today
+Biggest challenge faced today
+An unexpected experience
+A problem you solved & how it was solved
+A failure that occurred and your response to it
+
 
 characterize program, analyze
 there is great practical usage for this area
@@ -68,5 +97,13 @@ Day 7:
 
 Day 8:
 7.5
+
+Day 9: (Sunday)
+4
+
+Day 10:
+7.5
+
+(65.5)
 
 nmru, lru?, test random array addresses, timing

@@ -12,17 +12,17 @@ using namespace std;
 const int TESTS = 100;
 const int BIGARRAYSCALE = 250;
 const int NUMWARMUP = 50000;
-const int ACCESSESPERTEST = 500;
+const int ACCESSESPERTEST = 5;
 const int BUCKETS = 100;
 const uint64_t SIZE = 128;
 
 // CALCULATION TIME!
 // 8MB ~ 8000000B
 // 8000000B / (16B/int) = 500000ints
-const int NUMBLOCKS = 500000, NUMSETS = 4;
+const int NUMBLOCKS = 500000, NUMSETS = NUMBLOCKS/4;
 
-uint64_t newarray[128 * BIGARRAYSCALE];
-// uint64_t newarray[64*TESTS*128*ACCESSESPERTEST];
+// uint64_t newarray[128 * BIGARRAYSCALE];
+uint64_t newarray[64*TESTS*128*ACCESSESPERTEST];
 uint64_t now, fini;
 double times[TESTS][128];
 uint64_t t;
@@ -97,7 +97,8 @@ int main() {
   // TO WARM UP!
   for(uint64_t i = 0; i<NUMWARMUP; ++i) {
     uint64_t temp = (uint64_t)(((float)rand() / RAND_MAX) * SIZE * BIGARRAYSCALE);
-    t = newarray[temp];
+    // t = newarray[temp];
+    t = newarray[0];
   }
   startTSC();
   endTSC();
@@ -112,7 +113,9 @@ int main() {
         now = startTSC();
         for(int k = 0; k<ACCESSESPERTEST; ++k) {
           uint64_t temp = (uint64_t)(((float)rand() / RAND_MAX) * SIZE * BIGARRAYSCALE);
-          t = newarray[temp];
+          // t = newarray[temp];
+          t = newarray[0];
+          // t = newarray[64*(k + i*ACCESSESPERTEST + j*SIZE*ACCESSESPERTEST)];
         }
         fini = endTSC();
 
@@ -147,20 +150,21 @@ int main() {
 
   srand(50); // Seed with the same seed, to ensure the random numbers are the same
   // do the same warming up, too
-  for(uint64_t i = 0; i<NUMWARMUP; ++i) {
-    uint64_t temp = (uint64_t)(((float)rand() / RAND_MAX) * SIZE * BIGARRAYSCALE);
-    t = newarray[temp];
-    fout << 0 << " " << ((long long)&newarray[temp]/8 % NUMBLOCKS) / 16 << endl;
-  }
+  // for(uint64_t i = 0; i<NUMWARMUP; ++i) {
+  //   uint64_t temp = (uint64_t)(((float)rand() / RAND_MAX) * SIZE * BIGARRAYSCALE);
+  //   t = newarray[temp];
+  //   fout << 0 << " " << ((long long)&newarray[temp]/8 % NUMBLOCKS) / 16 << endl;
+  // }
   fout << "3 3" << endl;
   for(int j = 0; j<TESTS; ++j) {
     for(uint64_t i = 0; i<SIZE; ++i) {
       for(int k = 0; k<ACCESSESPERTEST; ++k) {
-        // uint64_t temp = (uint64_t)(((float)rand() / RAND_MAX) * SIZE * BIGARRAYSCALE);
-        uint64_t temp = 64*(k + i*ACCESSESPERTEST + j*SIZE*ACCESSESPERTEST);
+        uint64_t temp = (uint64_t)(((float)rand() / RAND_MAX) * SIZE * BIGARRAYSCALE);
+        // uint64_t temp = 64*(k + i*ACCESSESPERTEST + j*SIZE*ACCESSESPERTEST);
         // ALSO
-        fout << 0 << " " << ((long long)&newarray[temp]/8 % NUMBLOCKS) / 16 << endl;
-        // 8 IS FOR CONVERTING THE ADDRESSES TO SEQUENTIAL
+        fout << 0 << " " << ((long long)&newarray[temp]/32) / 16 << endl;
+        // fout << 0 << " " << ((long long)&newarray[0]/32) / 16 << endl;
+        // 32 IS FOR CONVERTING THE ADDRESSES TO SEQUENTIAL
         // 16 IS FOR THE FACT THAT CACHE LINES ARE 64 BYTES LONG, SO THEY CAN FIT 16 INTS
       }
     }
