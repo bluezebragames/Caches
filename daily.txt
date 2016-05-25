@@ -1,5 +1,31 @@
 Today:
 
+Part I Reflections on the original proposal
+a. project is described and clearly tied to community service or career opportunities
+b. project goals: what they were, how they were / were not met
+The project involves modeling a software cache in hardware.  This is a skill and a learning experience that will be really useful when I am getting a job or even just in college classes.
+My goals for this project were to complete it successfully, learning about computer hardware, caches and programming implementations of hardware.  I think I've accomplished these goals, since I have completed it, I am standing here alive today, and I have certainly learned a lot.
+
+Part II Overarching lessons
+a. largest lesson learned
+b. personal strength and challenge identified during this project
+c. how the opportunity affects vision of students’ future
+d. does / does not recommend this site for future seniors.
+My largest lesson learned was that coding is doable, and I have the tools and skills to do it.  I know now what real-life programming is all about, and it certainly takes practice but is well within people's grasp.
+
+I've discovered that I was certainly able to easily do many parts of the project, but other parts were not quite so simple.  Interestingly, which parts fell into which categories was not what I might have expected at first.  I expected that the programming would be more challenging than simply understanding the question, which I was sadly mistaken about (luckily the errors I made were easy to fix).
+
+This opportunity has really shaped what I hope my future looks like.  I understand that I want my life to involve programming, in some way, shape or form.
+
+I would definitely recommend this job or a job like this to any senior who is interested in programming.  Mr. Hirano was a great teacher, and he taught me a lot about caches and programming in general.  Unfortunately, I don't think he's willing to take any more senior projects on, since I was probably enough for a lifetime
+
+Part III Mechanics of the presentation
+a. required presentation materials used are organized, correct, and used effectively
+b. delivery was polished, within the 10 -15 minute time limit; presenter is poised and at ease in front of the audience
+c. presentation is well organized
+d. introduction and conclusion are powerful and effective
+e. presenter answers questions well
+f. presenter dressed appropriately
 
 TODO: go back to the proposal
 TODO: overarching lessons
@@ -22,23 +48,6 @@ It's annoying to do something and have it take forever, for not much reward :(
 
 
 
-Dear Mr. Hannen,
-
-Here's today's log.
-
-
-Today I finished fixing the bugs that have plagued me from the beginning.  After learning how to correctly use gdb, the cool debugger thing that I downloaded a few days ago, I found the segfaults and corrected them (one was caused by an integer overflow, and the other one was something about the difference between % and /).
-
-Biggest challenge: Incorrectly assuming that the segfaults were caused upon termination of the program, when in reality they were caused much earlier -- also, figuring out how to use gdb
-
-Largest lesson: Never assume that what you already have written is right, because there's a pretty good chance it actually isn't.
-
-I'll see you at 11:30 on Wednesday in your room, then.
-
-
-Thanks,
-T.J.
-
 Largest lesson learned today
 Biggest challenge faced today
 An unexpected experience
@@ -55,23 +64,6 @@ there is great practical usage for this area
 // AND SEND IT
 
 
-Part I Reflections on the original proposal
-a. project is described and clearly tied to community service or career opportunities
-b. project goals: what they were, how they were / were not met
-
-Part II Overarching lessons
-a. largest lesson learned
-b. personal strength and challenge identified during this project
-c. how the opportunity affects vision of students’ future
-d. does / does not recommend this site for future seniors.
-
-Part III Mechanics of the presentation
-a. required presentation materials used are organized, correct, and used effectively
-b. delivery was polished, within the 10 -15 minute time limit; presenter is poised and at ease in front of the audience
-c. presentation is well organized
-d. introduction and conclusion are powerful and effective
-e. presenter answers questions well
-f. presenter dressed appropriately
 
 
 Day 1:
@@ -103,6 +95,9 @@ Day 9: (Sunday)
 
 Day 10:
 7.5
+
+Day 11:
+3
 
 (65.5)
 

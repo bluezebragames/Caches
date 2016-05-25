@@ -9,7 +9,7 @@ int main() {
   ifstream fin("out.txt");
 
   // MEMORY SIZE IS FIXED AT 150
-  int numblocks, numsets;
+  long long numblocks, numsets;
   cout << "number of blocks?\n";
   fin >> numblocks;
 
@@ -25,10 +25,11 @@ int main() {
   Cache ch = Cache(numblocks, numsets);
 
   long long address;
-  int rw = 0;
-  int counter = 0;
+  long long rw = 0;
+  long long counter = 0;
   while(rw != -1) {
     fin >> rw >> address;
+    address /= 16; // compression!
     counter++;
     // if(counter % 4000 == 0) {cout << counter << "!\n";}
     switch (rw) {
@@ -38,7 +39,7 @@ int main() {
       break;
     // case 1:
     //   cout << "what do you want to write?";
-    //   int toWrite; fin >> toWrite;
+    //   long long toWrite; fin >> toWrite;
     //   ch.WriteA(address, toWrite);
     //   break;
     case 2:

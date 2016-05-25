@@ -18,8 +18,8 @@ const uint64_t SIZE = 128;
 
 // CALCULATION TIME!
 // 8MB ~ 8000000B
-// 8000000B / (16B/int) = 500000ints
-const int NUMBLOCKS = 500000, NUMSETS = NUMBLOCKS/4;
+// 8000000B / (4B/int) / (16int/line) = 125000ints
+const int NUMBLOCKS = 125000, NUMSETS = NUMBLOCKS/4;
 
 // uint64_t newarray[128 * BIGARRAYSCALE];
 uint64_t newarray[64*TESTS*128*ACCESSESPERTEST];
@@ -162,8 +162,8 @@ int main() {
         uint64_t temp = (uint64_t)(((float)rand() / RAND_MAX) * SIZE * BIGARRAYSCALE);
         // uint64_t temp = 64*(k + i*ACCESSESPERTEST + j*SIZE*ACCESSESPERTEST);
         // ALSO
-        fout << 0 << " " << ((long long)&newarray[temp]/32) / 16 << endl;
-        // fout << 0 << " " << ((long long)&newarray[0]/32) / 16 << endl;
+        fout << 0 << " " << ((long long)&newarray[temp]/32) << endl;
+        // fout << 0 << " " << ((long long)&newarray[0]/32) << endl;
         // 32 IS FOR CONVERTING THE ADDRESSES TO SEQUENTIAL
         // 16 IS FOR THE FACT THAT CACHE LINES ARE 64 BYTES LONG, SO THEY CAN FIT 16 INTS
       }

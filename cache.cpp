@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 // initialize the cache, set up the vectors for addresses and repls
-Cache::Cache(int nb, int ns) {
+Cache::Cache(long long nb, long long ns) {
   srand(time(0));
   numblocks = nb;
   numsets = ns;
@@ -16,11 +16,11 @@ Cache::Cache(int nb, int ns) {
   temp.valid = false;
   cache.resize(numblocks, temp);
   mru.resize(numsets, -1);
-  vector<int> tempv;
+  vector<long long> tempv;
   tempv.resize(numblocks/numsets, 0);
   lru.resize(numsets, tempv);
   data.resize(numblocks, -1);
-  memset(memory, 0, MEMSIZE * sizeof(int));
+  memset(memory, 0, MEMSIZE * sizeof(long long));
 }
 
 Cache::~Cache() {
@@ -32,7 +32,7 @@ void Cache::clear() {
   misses = 0;
   cache.clear();
   mru.clear();
-  for(int i = 0; i<(int)lru.size(); ++i) {
+  for(long long i = 0; i<(long long)lru.size(); ++i) {
     lru[i].clear();
   }
   lru.clear();
@@ -43,11 +43,11 @@ void Cache::clear() {
   temp.valid = false;
   cache.resize(numblocks, temp);
   mru.resize(numsets, -1);
-  vector<int> tempv;
+  vector<long long> tempv;
   tempv.resize(numblocks/numsets, 0);
   lru.resize(numsets, tempv);
   data.resize(numblocks, -1);
-  memset(memory, -1, MEMSIZE * sizeof(int));
+  memset(memory, -1, MEMSIZE * sizeof(long long));
 }
 
 void Cache::hmzero() {
@@ -57,7 +57,7 @@ void Cache::hmzero() {
 
 
 // find an element in the cache, assuming that the cache is direct-mapped
-int Cache::FindDM(int address) {
+long long Cache::FindDM(long long address) {
   MOD = numblocks;
   // just in case numsets gets filled out while doing direct-map
   // if the tags match and the entry is valid, you've hit
@@ -80,11 +80,11 @@ int Cache::FindDM(int address) {
 }
 
 // find an element in the cache, assuming the cache is set-associative
-int Cache::FindA(int address) {
+long long Cache::FindA(long long address) {
   MOD = numsets;  // it's different for DM and A
-  int invalid = -1; // if there is an invalid block in the cache and we miss, we can replace the invalid with the new block
+  long long invalid = -1; // if there is an invalid block in the cache and we miss, we can replace the invalid with the new block
   // check all of the possible places it could be
-  for(int i = 0; i<numblocks/numsets; ++i) {
+  for(long long i = 0; i<numblocks/numsets; ++i) {
     // blocks are separated by a distance of 1 and are at an 'offset' of address%MOD * numblocks/numsets
     if(cache[convAddress(address,i)].tag == address/MOD && cache[convAddress(address,i)].valid == true) {
       // HIT!
@@ -122,17 +122,17 @@ int Cache::FindA(int address) {
   return LRU(address, temp);
 }
 
-void Cache::touchLRU(int i, int j) {
-  int curr = lru[i][j];
-  for(int k = 0; k<(int)lru[i].size(); ++k) {
+void Cache::touchLRU(long long i, long long j) {
+  long long curr = lru[i][j];
+  for(long long k = 0; k<(long long)lru[i].size(); ++k) {
     if(lru[i][k] > curr)
       lru[i][k]--;
   }
   lru[i][j] = numblocks / numsets - 1;
 }
 
-int Cache::LRU(int address, entry temp) {
-  int i;
+long long Cache::LRU(long long address, entry temp) {
+  long long i;
   for(i = 0; i<numblocks / numsets; ++i) {
     if(lru[address%MOD][i] == 0) break;
   }
@@ -143,14 +143,14 @@ int Cache::LRU(int address, entry temp) {
   return convAddress(address, i);
 }
 
-int Cache::NMRU(int address, entry temp) {
+long long Cache::NMRU(long long address, entry temp) {
   double i;
-  int counter = 0;
+  long long counter = 0;
   do {
     i = rand();
     i /= (long long)RAND_MAX+1;
     i *= numblocks/numsets;
-    i = (int)i;
+    i = (long long)i;
     counter++;
   } while (i == mru[address%MOD] && numsets != 1);
   // the only problem is that I have no clue if this works
@@ -162,11 +162,11 @@ int Cache::NMRU(int address, entry temp) {
 }
 
 // replace a random
-int Cache::RAND(int address, entry temp) {
+long long Cache::RAND(long long address, entry temp) {
   double i = rand();
   i /= (long long)RAND_MAX+1;
   i *= numsets;
-  i = (int)i;
+  i = (long long)i;
 
   cache[convAddress(address, i)] = temp;
   // data[convAddress(address, i)] = memory[address];
@@ -175,14 +175,14 @@ int Cache::RAND(int address, entry temp) {
 }
 
 
-void Cache::WriteDM (int address, int toWrite) {
+void Cache::WriteDM (long long address, long long toWrite) {
   FindDM(address);
   data[address%MOD] = toWrite;
   memory[address] = toWrite;
 }
 
-void Cache::WriteA (int address, int toWrite) {
-  int place = FindA(address);
+void Cache::WriteA (long long address, long long toWrite) {
+  long long place = FindA(address);
   data[place] = toWrite;
   memory[address] = toWrite;
 }
@@ -192,30 +192,30 @@ void Cache::WriteA (int address, int toWrite) {
 
 // DEBUG
 void Cache::print() {
-  // prints the contents of the cache: tag, index, data
-  // for(int i = 0; i<(int)cache.size(); ++i) {
+  // prlong longs the contents of the cache: tag, index, data
+  // for(long long i = 0; i<(long long)cache.size(); ++i) {
   //   cout << cache[i].tag << "\t" << cache[i].index << "\t" << data[i] << "\n";
   // }
   // // outputs mrus
-  // for(int i = 0; i<(int)mru.size(); ++i) {
+  // for(long long i = 0; i<(long long)mru.size(); ++i) {
   //   cout << "MRU " << i << ": " << mru[i] << endl;
   // }
   // // outputs lrus
-  // for(int i = 0; i<(int)lru.size(); ++i) {
+  // for(long long i = 0; i<(long long)lru.size(); ++i) {
   //   cout << "LRU " << i << ": ";
-  //   for(int j = 0; j<(int)lru[i].size(); ++j) {
+  //   for(long long j = 0; j<(long long)lru[i].size(); ++j) {
   //     cout << lru[i][j] << " ";
   //   }
   //   cout << endl;
   // }
-  // prints general information about the cache
+  // prlong longs general information about the cache
   cout << "This cache is " << (numsets == numblocks ? ("direct-mapped ") : (numsets == 1 ? ("fully associative ") : (to_string(numblocks/numsets) + "-way associative "))) << "with " << numsets << " sets and " << numblocks << " blocks." << endl;
-  // prints hit rate
+  // prlong longs hit rate
   cout << "Current hit rate is: " << (100.0 * hits / (hits + misses)) << "%\n";
   cout << hits << " hits, " << misses << " misses, for a total of " << hits+misses << " queries\n";
-  // prints cache utilization
-  int used = 0;
-  for(int i = 0; i<(int)cache.size(); ++i) {
+  // prlong longs cache utilization
+  long long used = 0;
+  for(long long i = 0; i<(long long)cache.size(); ++i) {
     if(cache[i].tag == -1){used++;}
   }
   cout << "Cache utilization: " << cache.size() - used << " cache lines were used, out of " << cache.size() << endl;

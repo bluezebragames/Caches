@@ -7,44 +7,44 @@
 using namespace std;
 
 struct entry {
-  int tag;
-  int index;
+  long long tag;
+  long long index;
   bool valid;
 };
 
 class Cache {
 public:
-  Cache(int, int);
+  Cache(long long, long long);
   ~Cache();
   // RESTART
   void clear();
   void hmzero();
   // FIND
-  int FindDM(int);
-  int FindA(int);
+  long long FindDM(long long);
+  long long FindA(long long);
   // WRITE
-  void WriteDM(int, int);
-  void WriteA(int, int);
+  void WriteDM(long long, long long);
+  void WriteA(long long, long long);
   // REPLACEMENT
-  int RAND(int, entry);
-  int NMRU(int, entry);
-  int LRU(int, entry);
-  void touchLRU(int, int);
+  long long RAND(long long, entry);
+  long long NMRU(long long, entry);
+  long long LRU(long long, entry);
+  void touchLRU(long long, long long);
 
   void print();
-  static const int MEMSIZE = 1500;
+  static const long long MEMSIZE = 1500;
 
 private:
-  int MOD, numblocks, numsets, hits, misses;
+  long long MOD, numblocks, numsets, hits, misses;
   vector<entry> cache;
-  vector<int> data;
-  vector<int> mru;
+  vector<long long> data;
+  vector<long long> mru;
   // usage: mru[set] = index
-  vector<vector<int> > lru;
+  vector<vector<long long> > lru;
   // usage: lru[set][index] = which place it occupies
-  int memory[MEMSIZE];
+  long long memory[MEMSIZE];
 
-  inline int convAddress(int address, int i) {
+  inline long long convAddress(long long address, long long i) {
     return address%MOD*(numblocks/numsets) + i;
   }
 };
